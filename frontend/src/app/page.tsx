@@ -2,7 +2,7 @@ import Link from "next/link";
 import GatewayDemo from "@/components/GatewayDemo";
 import GuestOnly from "@/components/GuestOnly";
 import DemoButton from "@/components/DemoButton";
-
+//
 const outcomes = [
   { key: "allowed", label: "Allowed", text: "Safe actions run straight away.", example: "lookup_customer" },
   {
