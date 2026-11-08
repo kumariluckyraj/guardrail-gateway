@@ -24,6 +24,7 @@ const links = [
     "Audit logs",
     "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8",
   ],
+    ["/dashboard/suggestions", "Suggestions", "M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"],
   ["/dashboard/run", "Run Sales Agent", "M5 3l14 9-14 9V3z"],
 ];
 
