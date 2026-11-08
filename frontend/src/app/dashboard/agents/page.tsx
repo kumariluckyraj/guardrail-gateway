@@ -3,11 +3,17 @@
 import { useCallback, useEffect, useState } from "react";
 import ApiKeyModal from "@/components/ApiKeyModal";
 import Badge from "@/components/Badge";
+import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/ui";
 import type { Agent, AgentWithKey } from "@/types";
 
+const DEMO_EMAIL = (process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "").toLowerCase();
+
 export default function AgentsPage() {
+  const { user } = useAuth();
+  const locked = !!DEMO_EMAIL && user?.email.toLowerCase() === DEMO_EMAIL;
+
   const [agents, setAgents] = useState<Agent[]>([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -22,6 +28,7 @@ export default function AgentsPage() {
 
   async function create(e: React.FormEvent) {
     e.preventDefault();
+    if (locked) return;
     setError("");
     setBusy(true);
     try {
@@ -38,6 +45,7 @@ export default function AgentsPage() {
   }
 
   async function rotate(a: Agent) {
+    if (locked) return;
     if (!confirm(`Rotate the key for "${a.name}"? The old key stops working immediately.`)) return;
     try {
       const r = await api<AgentWithKey>(`/agents/${a.id}/rotate-key`, { method: "POST" });
@@ -49,6 +57,7 @@ export default function AgentsPage() {
   }
 
   async function revoke(a: Agent) {
+    if (locked) return;
     if (!confirm(`Revoke "${a.name}"? This is permanent.`)) return;
     try {
       await api(`/agents/${a.id}/revoke`, { method: "POST" });
@@ -58,6 +67,8 @@ export default function AgentsPage() {
     }
   }
 
+  const off = "disabled:cursor-not-allowed disabled:opacity-40";
+
   return (
     <div>
       <h1 className={ui.title}>Agents &amp; API keys</h1>
@@ -65,22 +76,35 @@ export default function AgentsPage() {
         Register each AI agent you run. It uses its API key to reach tools through the gateway.
       </p>
 
+      {locked && (
+        <div className="mt-5 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-4 text-sm text-amber-100">
+          <p className="font-semibold">🔒 This page is read-only in the demo</p>
+          <p className="mt-1 text-amber-200/80">
+            The demo account is shared by every visitor, and the demo Sales Agent depends on its API key. If anyone
+            created, rotated or revoked an agent here, the demo would stop working for everyone else. You can look
+            around freely. To manage your own agents and keys, register your company; it takes under a minute.
+          </p>
+        </div>
+      )}
+
       <form onSubmit={create} className={`${ui.card} mt-6 grid items-center gap-3 sm:grid-cols-[1fr_2fr_auto]`}>
         <input
           required
           minLength={2}
+          disabled={locked}
           placeholder="Agent name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={ui.input}
+          className={`${ui.input} ${off}`}
         />
         <input
+          disabled={locked}
           placeholder="What does it do?"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className={ui.input}
+          className={`${ui.input} ${off}`}
         />
-        <button disabled={busy} className={ui.btn}>
+        <button disabled={busy || locked} title={locked ? "Turned off in the demo" : ""} className={`${ui.btn} ${off}`}>
           {busy ? "Creating..." : "Create agent"}
         </button>
       </form>
@@ -115,10 +139,20 @@ export default function AgentsPage() {
                 <td className={`${ui.td} space-x-2 text-right`}>
                   {a.status === "active" && (
                     <>
-                      <button onClick={() => rotate(a)} className={ui.ghostSm}>
+                      <button
+                        onClick={() => rotate(a)}
+                        disabled={locked}
+                        title={locked ? "Turned off in the demo" : ""}
+                        className={`${ui.ghostSm} ${off}`}
+                      >
                         Rotate key
                       </button>
-                      <button onClick={() => revoke(a)} className={ui.dangerSm}>
+                      <button
+                        onClick={() => revoke(a)}
+                        disabled={locked}
+                        title={locked ? "Turned off in the demo" : ""}
+                        className={`${ui.dangerSm} ${off}`}
+                      >
                         Revoke
                       </button>
                     </>
