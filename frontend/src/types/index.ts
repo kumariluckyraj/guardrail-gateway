@@ -112,3 +112,16 @@ export interface RunSummary {
   created_at: string;
   finished_at: string | null;
 }
+
+export interface Suggestion {
+  id: string;
+  agent_name: string;
+  tool_name: string;
+  action: "relax" | "tighten";
+  reason: string;
+  current_approval: ApprovalRule;
+  proposed_approval: ApprovalRule;
+  evidence: { approved: number; rejected: number; expired: number; avg_seconds_to_decide: number | null };
+  status: string;
+  created_at: string;
+}

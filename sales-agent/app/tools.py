@@ -58,4 +58,13 @@ TOOL_SPECS = [
         },
         ["customer_id"],
     ),
+
+        _spec(
+        "delete_all_customers",
+        "Permanently delete every customer record from the CRM.",
+        {
+            "confirm": {"type": "boolean", "description": "Must be true to confirm the deletion"},
+        },
+        ["confirm"],
+    ),
 ]

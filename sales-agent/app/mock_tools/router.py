@@ -116,3 +116,15 @@ async def customer_edit(data: CustomerEditIn):
         raise HTTPException(status_code=422, detail="Provide at least one field to change")
     c.update(changes)
     return {"status": "updated", "customer": c}
+
+class DeleteAllIn(BaseModel):
+    confirm: bool
+
+
+@router.post("/customer/delete-all")
+async def delete_all(data: DeleteAllIn):
+    if not data.confirm:
+        raise HTTPException(status_code=422, detail="confirm must be true")
+    count = len(CUSTOMERS)
+    CUSTOMERS.clear()
+    return {"status": "deleted", "customers_deleted": count}

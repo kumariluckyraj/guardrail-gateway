@@ -59,13 +59,14 @@ async def _ensure_policy(db, org_id: str, agent_id: str, tool: dict):
     now = datetime.now(timezone.utc)
     await db.policies.update_one(
         key,
-        {"$setOnInsert": {"tool_name": tool["name"], "allowed": True, "rate_limit": rate,
-                                                    "approval": approval,
+        {"$setOnInsert": {"tool_name": tool["name"],
+                          "allowed": not rules.get("deny", False),
+                          "rate_limit": rate,
+                          "approval": approval,
                           "created_at": now, "updated_at": now}},
         upsert=True,
     )
     return await db.policies.find_one(key)
-
 
 @router.post("/check")
 async def check(body: CheckRequest, agent: dict = Depends(get_agent_from_api_key)):

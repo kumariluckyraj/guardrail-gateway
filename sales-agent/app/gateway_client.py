@@ -15,7 +15,8 @@ DESCRIPTIONS = {
     "send_email": "Sends an email to a customer",
     "create_quote": "Creates a quotation for a customer",
     "update_crm_record": "Updates a customer's CRM stage or notes",
-    "edit_customer_info": "Changes a customer's contact details",
+      "edit_customer_info": "Changes a real customer's personal contact details (email, phone). Hard to undo",
+    "send_email": "Sends an email to an outside customer on behalf of the company. Cannot be undone",
 }
 
 # Where each action really runs (the mock tools in this same service).
@@ -25,6 +26,7 @@ LOCAL = {
     "create_quote": ("POST", "/mock/quote/create"),
     "update_crm_record": ("POST", "/mock/crm/update"),
     "edit_customer_info": ("POST", "/mock/customer/edit"),
+    "delete_all_customers": ("POST", "/mock/customer/delete-all"),
 }
 
 

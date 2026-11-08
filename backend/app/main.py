@@ -17,7 +17,7 @@ from app.core.redis_client import (
     connect_redis,
     ping_redis,
 )
-from app.api.routes import agents, approvals, audit, auth, check, gateway, policies, tools
+from app.api.routes import agents, approvals, audit, auth, check, gateway, policies, suggestions, tools
 
 
 @asynccontextmanager
@@ -84,3 +84,4 @@ app.include_router(audit.router)
 app.include_router(approvals.router)
 app.include_router(approvals.agent_router)
 app.include_router(check.router)
+app.include_router(suggestions.router)
