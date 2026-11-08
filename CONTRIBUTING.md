@@ -25,7 +25,7 @@ Follow "Run it locally" in the README.
 - **Never commit secrets.** No `.env` files, API keys or passwords.
 - Keep security-sensitive behaviour safe by default. If something fails, the gateway should block or ask a
   human, never silently allow.
-- Keep pull requests small. One idea per PR.
+- Keep pull requests small. One idea per PR
 
 ## Security problems
 
