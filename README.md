@@ -14,7 +14,7 @@ ask first. Before an agent acts, the gateway decides:
 
 Every decision is saved in an audit log.
 
-**[▶ Try the live demo](YOUR_DEMO_LINK)** (no sign-up)
+**[▶ Try the live demo](https://guardrail-gateway-five.vercel.app)** (no sign-up)
 
 ![Dashboard screenshot](docs/screenshot.png)
 
